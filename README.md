@@ -17,11 +17,10 @@ src/main/resources
 
 Expense Tracker App
 
-A simple and intuitive web application to manage personal finances. Track your income and expenses, categorize transactions, and get insights through summaries and charts. Built with Spring Boot, Thymeleaf, JPA/Hibernate, and MySQL.
-------------------------------------------------------------------
+
 Features
 
-Add, edit(), and delete expenses and income entries
+Add, edit(Api Not fetching some errors will fix soon), and delete expenses and income entries
 
 Categorize transactions for easy tracking
 
