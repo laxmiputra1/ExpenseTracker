@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Null-safe title -->
+    <title th:text="${expense != null and expense.id != null ? 'Edit Expense' : 'Add Expense'}">Add Expense</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .form-label { font-weight: 600; }
+        .d-flex.gap-2 > * { min-width: 100px; }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <!-- Null-safe header -->
+    <h2 th:text="${expense != null and expense.id != null ? 'Edit Expense' : 'Add Expense'}">Add Expense</h2>
+
+    <form th:action="${expense != null and expense.id != null ? @{/expenses/update/{id}(id=${expense.id})} : @{/expenses/save}}"
+          th:object="${expense}" method="post">
+
+        <!-- Expense Name -->
+        <div class="mb-3">
+            <label class="form-label">Expense Name</label>
+            <input type="text" th:field="*{name}" class="form-control"
+                   placeholder="Enter expense name" required>
+        </div>
+
+        <!-- Amount -->
+        <div class="mb-3">
+            <label class="form-label">Amount</label>
+            <input type="number" step="0.01" th:field="*{amount}" class="form-control"
+                   placeholder="Enter amount" required>
+        </div>
+
+        <!-- Date -->
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" th:field="*{date}" class="form-control" required>
+        </div>
+
+        <!-- Category Dropdown (SAFE FIX) -->
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select th:field="*{category.id}" class="form-select" required>
+                <option th:value="" disabled th:text="'-- Select Category --'"></option>
+                <option th:each="cat : ${categories}" 
+                        th:value="${cat.id}" 
+                        th:text="${cat.name}" 
+                        th:selected="${expense != null and expense.category != null} ? ${cat.id == expense.category.id} : false">
+                </option>
+            </select>
+        </div>
+
+        <!-- Description / Note -->
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea th:field="*{note}" class="form-control"
+                      placeholder="Enter note"></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                <span th:text="${expense != null and expense.id != null ? 'Update Expense' : 'Save Expense'}">Save Expense</span>
+            </button>
+            <a href="/expenses" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Font Awesome JS (Optional if icons need JS) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html>
